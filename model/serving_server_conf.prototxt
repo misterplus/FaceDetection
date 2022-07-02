@@ -1,0 +1,34 @@
+feed_var {
+  name: "im_shape"
+  alias_name: "im_shape"
+  is_lod_tensor: false
+  feed_type: 1
+  shape: 2
+}
+feed_var {
+  name: "image"
+  alias_name: "image"
+  is_lod_tensor: false
+  feed_type: 1
+  shape: 3
+}
+feed_var {
+  name: "scale_factor"
+  alias_name: "scale_factor"
+  is_lod_tensor: false
+  feed_type: 1
+  shape: 2
+}
+fetch_var {
+  name: "multiclass_nms3_0.tmp_0"
+  alias_name: "multiclass_nms3_0.tmp_0"
+  is_lod_tensor: true
+  fetch_type: 1
+  shape: -1
+}
+fetch_var {
+  name: "multiclass_nms3_0.tmp_2"
+  alias_name: "multiclass_nms3_0.tmp_2"
+  is_lod_tensor: false
+  fetch_type: 2
+}
