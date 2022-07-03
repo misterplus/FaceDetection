@@ -44,7 +44,7 @@ class FaceWebService(WebService):
             fetch_map[key] = fetch_map[key].tolist()
         threshold = feed['threshold'] if feed['threshold'] else 0.9
         fetch_map['faces'] = [arr[1:] for arr in fetch_map['multiclass_nms3_0.tmp_0'] if arr[1] > threshold]
-        size = feed['size'] if feed['size'] else len(fetch_map['face'])
+        size = feed['size'] if feed['size'] else len(fetch_map['faces'])
         fetch_map['faces'] = fetch_map['faces'][0:size]
         fetch_map['size'] = len(fetch_map['faces'])
         del fetch_map['multiclass_nms3_0.tmp_0']
