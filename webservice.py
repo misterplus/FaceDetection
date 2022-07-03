@@ -52,9 +52,15 @@ class FaceWebService(WebService):
         return fetch_map
 
 
+def after_request(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
+    return response
+
 if __name__ == '__main__':
     face_service = FaceWebService(name="FaceDetection")
     face_service.load_model_config("model")
     face_service.prepare_server(workdir="workdir", port=9393)
     face_service.run_debugger_service()
+    face_service.app_instance.after_request(after_request)
     face_service.run_web_service()
