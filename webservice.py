@@ -4,7 +4,7 @@ from paddle_serving_app.reader import *
 from paddle_serving_server.web_service import WebService
 
 preprocess = Sequential([
-    Base64ToImage(), Normalize((123,117,104), (127.502231, 127.502231, 127.502231)), Transpose((2, 0, 1)),
+    Base64ToImage(), Normalize((123, 117, 104), (127.502231, 127.502231, 127.502231)), Transpose((2, 0, 1)),
 ])
 
 
@@ -13,10 +13,20 @@ class FaceWebService(WebService):
     def get_prediction(self, request):
         if not request.json:
             abort(400)
-        if "threshold" in request.json["feed"] and (request.json["feed"]["threshold"] < 0 or request.json["feed"]["threshold"] > 1):
-            abort(400)
-        if "size" in request.json["feed"] and request.json["feed"]["size"] < 1:
-            abort(400)
+        if "threshold" in request.json["feed"]:
+            try:
+                threshold = float(request.json["feed"]["threshold"])
+                if threshold < 0 or threshold > 1:
+                    abort(400)
+            except ValueError:
+                abort(400)
+        if "size" in request.json["feed"]:
+            try:
+                size = int(request.json["feed"]["size"])
+                if size < 1:
+                    abort(400)
+            except ValueError:
+                abort(400)
         try:
             feed, fetch, is_batch = self.preprocess(request.json["feed"],
                                                     ["multiclass_nms3_0.tmp_0"])
@@ -58,6 +68,7 @@ def after_request(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
     return response
+
 
 if __name__ == '__main__':
     face_service = FaceWebService(name="FaceDetection")
